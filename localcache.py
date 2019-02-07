@@ -6,7 +6,7 @@ class localcache:
     Data: 2019-02-07
     """
     
-    import os, gzip, pickle
+    import os, gzip, pickle, hashlib
 
     def __init__(self):
         """
@@ -39,7 +39,7 @@ class localcache:
         # Now remove directories:
         fileList = [item for item in fileList if not os.path.isdir(item)]
         # Generate filename
-        outFile = "{}.sav".format(hash(os.path.abspath(datasource)))
+        outFile = "{}.sav".format(hashlib.sha1(os.path.abspath(datasource).encode()).hexdigest())
 
         self._save_and_compress(os.path.join(self._get_local_repo_base_path(), "meta", "dir", outFile), data = {"fileList": fileList})
 
