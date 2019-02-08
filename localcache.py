@@ -7,13 +7,19 @@ class localcache:
     Data: 2019-02-07
     """
 
-    def __init__(self):
+    def __init__(self, verbose = False):
         """
         Local Cache initialisation.
         """
 
         self._sourceList = []
     
+    def _verb(self, message = ""):
+        """
+        Print a message if verbose
+        """
+        print("{}: {}".format(self.__class__, message))
+
     def add_source(self, datasource = None):
         """
         Add a data source for locating files
