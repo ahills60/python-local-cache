@@ -103,6 +103,7 @@ class localcache:
 
         for item in combs:
             os.makedirs(os.path.join(self._get_local_repo_base_path(), "cache", item))
+            os.makedirs(os.path.join(self._get_local_repo_base_path(), "meta", "file", item))
 
     def add_file_to_cache(self, filename, datastore = None):
         """
