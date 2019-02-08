@@ -151,3 +151,72 @@ class localcache:
                     break
                 sha1.update(data)
         return sha1.hexdigest()
+    
+    def _create_metadata(self, filename = None):
+        """
+        Create metadata from a file
+        """
+
+        data = {'sha1': self._hash_file_contents(filename)}
+
+        return data
+    
+    def _retrieve_metadata(self, filename = None):
+        """
+        Retrieve metadata file if one exists
+        """
+        if not os.path.exists(filename):
+            raise FileNotFoundError("Expected valid filename")
+        
+        hashval = hashlib.sha1(filename.encode()).hexdigest()
+
+        metaFilename = os.path.join(self._get_local_repo_base_path, "meta", "file", hashval[:2], "{}.meta".format(hashval))
+        
+        if os.path.exists(metaFilename):
+            metadata = self._load_compressed_file(metaFilename)
+        else:
+            metadata = self._create_metadata(filename)
+
+        return metadata
+    
+    def _write_metadata(self, filename = None, metadata = None):
+        """
+        Write provided metadata to file metadata location.
+        """
+        if not os.path.exists(filename):
+            raise FileNotFoundError("Expected valid filename")
+        
+        hashval = hashlib.sha1(filename.encode()).hexdigest()
+
+        metaFilename = os.path.join(self._get_local_repo_base_path, "meta", "file", hashval[:2], "{}.meta".format(hashval))
+
+        self._save_and_compress(metaFilename, metadata)
+    
+    def add_metadata(self, filename = None, metadata = None):
+        """
+        Add metadata to a file
+        """
+        assert filename is not None, "Expected filename"
+        assert metadata is not None, "Expected metadata"
+        if metadata is not dict:
+            metadata = {"data": metadata}
+
+        # Retrieve existing metadata
+        baseMeta = self._retrieve_metadata(filename)
+        if "user" in baseMeta:
+            baseMeta["user"].update(metadata)
+        else:
+            baseMeta["user"] = metadata
+
+    def get_metadata(self, filename = None):
+        """
+        Retrieve metadata for a file
+        """
+        assert filename is not None, "Expected filename"
+
+        baseMeta = self._retrieve_metadata(filename)
+        if "user" in baseMeta:
+            return baseMeta["user"]
+        else:
+            return {}
+        
