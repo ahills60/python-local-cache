@@ -112,3 +112,19 @@ class localcache:
         hashval = hashlib.sha1(filename.encode()).hexdigest()
         shutil.copy(fullpath, os.path.join(self._get_local_repo_base_path, "cache", hashval[:2], filename))
 
+    def save_states(self):
+        """
+        Save the current state of the local cache
+        """
+        self._save_and_compress(os.path.join(self._get_local_repo_base_path(), "sources.state"), {"datasource": self._sourceList})
+    
+    def load_states(self):
+        """
+        Restore the state of the local cache
+        """
+        try:
+            states = self._load_compressed_file(os.path.join(self._get_local_repo_base_path(), "sources.state"))
+            self._sourceList = states['datasource']
+        except:
+            pass
+    
