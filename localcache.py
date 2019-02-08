@@ -98,3 +98,17 @@ class localcache:
 
         for item in combs:
             os.makedirs(os.path.join(self._get_local_repo_base_path(), "cache", item))
+
+    def add_file_to_cache(self, filename, datastore = None):
+        """
+        Add the given file to the local file cache
+        """
+        if datastore is not None:
+            fullpath = os.path.join(datastore, filename)
+        else:
+            fullpath = filename
+            filename = os.path.basename(filename)
+
+        hashval = hashlib.sha1(filename.encode()).hexdigest()
+        shutil.copy(fullpath, os.path.join(self._get_local_repo_base_path, "cache", hashval[:2], filename))
+
