@@ -89,7 +89,6 @@ class localcache:
         """
         return sum(item.stat().st_size for item in os.scandir(os.path.join(self._get_local_repo_base_path, "cache")))
 
-
     def init_setup(self):
         """
         Create initialise base structure for the local cache
@@ -134,3 +133,18 @@ class localcache:
         except:
             pass
     
+    def _hash_file_contents(self, filename = None):
+        """
+        Hash the contents of a file
+        """
+
+        sha1 = hashlib.sha1()
+        with open(filename, 'rb') as file:
+            while True:
+                # Read in chunks
+                data = file.read(65536)
+                if not data:
+                    file.close()
+                    break
+                sha1.update(data)
+        return sha1.hexdigest()
