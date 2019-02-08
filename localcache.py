@@ -85,4 +85,10 @@ class localcache:
         pathList = [["meta", "dir"], ["meta", "files"], ["cache"]]
         
         for child in pathList:
-            os.makekdirs(os.path.join(self._get_local_repo_base_path(), *child))
+            os.makedirs(os.path.join(self._get_local_repo_base_path(), *child))
+
+        hexvals = [hex(val)[-1] for val in range(16)]
+        combs = ["{}{}".format(*item) for item in itertools.product(hexvals, hexvals)]
+
+        for item in combs:
+            os.makedirs(os.path.join(self._get_local_repo_base_path(), "cache", item))
