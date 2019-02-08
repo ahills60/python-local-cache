@@ -1,3 +1,4 @@
+import os, gzip, pickle, hashlib, shutil, itertools
 class localcache:
     """
     Local cache class for managing a local cache of files
@@ -5,8 +6,6 @@ class localcache:
     Author: Andrew Hills (a.hills@sheffield.ac.uk)
     Data: 2019-02-07
     """
-    
-    import os, gzip, pickle, hashlib
 
     def __init__(self):
         """
