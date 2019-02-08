@@ -1,4 +1,10 @@
-import os, gzip, pickle, hashlib, shutil, itertools
+import os
+import gzip
+import pickle
+import hashlib
+import shutil
+import itertools
+
 class localcache:
     """
     Local cache class for managing a local cache of files
