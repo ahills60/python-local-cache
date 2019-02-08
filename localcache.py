@@ -138,7 +138,9 @@ class localcache:
         """
         Hash the contents of a file
         """
-
+        if not os.path.exists(filename):
+            raise FileNotFoundError("Unable to find file \"{}\"".format(filename))
+        
         sha1 = hashlib.sha1()
         with open(filename, 'rb') as file:
             while True:
